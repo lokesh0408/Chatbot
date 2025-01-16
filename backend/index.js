@@ -20,7 +20,7 @@ app.post("/chat", async (req, res) => {
   try {
     //  save messages to the database
     await pool.query(
-      "INSERT INTO Messages (user_message, bot_response) VALUES (?, ?)",
+      "INSERT INTO Messages (user_message, bot_response) VALUES ($1, $2)",
       [user_message, bot_response]
     );
     res.json({ bot_response });
@@ -33,7 +33,7 @@ app.post("/chat", async (req, res) => {
 //  retrieve message history
 app.get("/messages", async (req, res) => {
   try {
-    const [rows] = await pool.query(
+    const { rows } = await pool.query(
       "SELECT * from messages order by created_at DESC"
     );
     res.json(rows);
