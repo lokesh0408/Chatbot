@@ -27,8 +27,14 @@ const Chat = () => {
     setLoading(true);
 
     try {
+      // Generate a thread_id or use an existing one
+      const thread_id =
+        localStorage.getItem("thread_id") || Date.now().toString();
+      localStorage.setItem("thread_id", thread_id);
+
       const response = await axios.post("http://localhost:5000/chat", {
         user_message: userMessage,
+        thread_id,
       });
 
       setMessages((prevMessages) => [
